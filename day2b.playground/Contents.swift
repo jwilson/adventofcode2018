@@ -1,38 +1,42 @@
 import Cocoa
 
-var twos = 0
-var threes = 0
-
 var inputs = String(contentsOfFile: Bundle.main.path(forResource: "input", ofType: "txt")!).split(separator: "\n")
 
-for input in inputs {
-    var chars = Array(input)
-    chars.sort()
-    var noDupes = Set(chars)
-    var counts = [String:Int]()
-    
-    for char in chars {
-        let key = String(char)
-        if counts.keys.contains(key) {
-            counts[key] = counts[key]! + 1
-        } else {
-            counts[key] = 1
+for input1 in inputs {
+    var charsOne = Array(input1)
+    var done = false
+    for input2 in inputs {
+        var charsTwo = Array(input2)
+        var count = 0
+        var index = [Int]()
+        var result = ""
+        
+        for i in 0..<charsOne.count {
+            var charOne = charsOne[i]
+            var charTwo = charsTwo[i]
+            
+            if (charTwo != charOne) {
+                count = count + 1
+                index.append(i)
+            }
+        }
+        
+        if (count == 1) {
+            for i in 0..<charsOne.count {
+                if i != index[0] {
+                    result = result + String(charsOne[i])
+                }
+            }
+            
+            print(result)
+            done = true
+            break
         }
     }
-
-    var foundTwos = false
-    var foundThrees = false
     
-    for (key, value) in counts {
-        if value == 2 && !foundTwos{
-            foundTwos = true
-            twos += 1
-        } else if value == 3 && !foundThrees {
-            foundThrees = true
-            threes += 1
-        }
+    if done {
+        break
     }
 }
 
-var checksum = twos * threes
-print(checksum)
+
